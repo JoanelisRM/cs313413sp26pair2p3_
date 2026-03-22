@@ -39,3 +39,11 @@ You can view the resulting test reports in HTML by opening this file in your bro
     app/build/reports/tests/debug/index.html
 
 (So far, this example does not include any Android instrumentation tests.)
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+Photo of results:
+<img width="468" height="750" alt="PNG image" src="https://github.com/user-attachments/assets/4d081c8b-ef90-461f-8fb2-dbec8f91df4f" />
+-----------------------------------------------------------------------------------------------------------------------------------
+
