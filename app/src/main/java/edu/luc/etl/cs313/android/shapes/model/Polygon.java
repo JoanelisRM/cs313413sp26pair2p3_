@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * A special case of a group consisting only of Points.
- *
  */
 public final class Polygon extends Group {
 
@@ -13,13 +12,12 @@ public final class Polygon extends Group {
     }
 
     @SuppressWarnings("unchecked")
-    public List<? extends Point> getPoints() {
-        return (List<? extends Point>) getShapes();
+    public List<Point> getPoints() {
+        return (List<Point>) getShapes();
     }
 
     @Override
-    public <Result> Result accept(final Visitor<Result> v) {
-        // TODO your job
-        return null;
+    public Result accept(final Visitor v) {
+        return v.onPolygon(this);
     }
 }
