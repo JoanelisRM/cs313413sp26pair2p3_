@@ -52,7 +52,7 @@ public class Draw implements Visitor<Void> {
     @Override
     public Void onFill(final Fill f) {
         final Style oldStyle = paint.getStyle();
-        paint.setStyle(Style.FILL);
+        paint.setStyle(Style.FILL_AND_STROKE);
         f.getShape().accept(this);
         paint.setStyle(oldStyle);
         return null;
