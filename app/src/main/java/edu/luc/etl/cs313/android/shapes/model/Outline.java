@@ -17,7 +17,7 @@ public final class Outline implements Shape {
     }
 
     @Override
-    public Result accept(final Visitor v) {
+    public <Result> Result accept(final Visitor<Result> v) {
         return v.onOutline(this);
     }
 }
