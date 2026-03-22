@@ -9,7 +9,7 @@ import edu.luc.etl.cs313.android.shapes.model.*;
 /**
  * A Visitor for drawing a shape to an Android canvas.
  */
-public class Draw implements Visitor {
+public class Draw implements Visitor<Void> {
 
     private final Canvas canvas;
     private final Paint paint;
@@ -17,12 +17,26 @@ public class Draw implements Visitor {
     public Draw(final Canvas canvas, final Paint paint) {
         this.canvas = canvas;
         this.paint = paint;
-        paint.setStyle(Style.STROKE);
+        this.paint.setStyle(Style.STROKE);
     }
 
     @Override
     public Void onCircle(final Circle c) {
         canvas.drawCircle(0, 0, c.getRadius(), paint);
+        return null;
+    }
+
+    @Override
+    public Void onRectangle(final Rectangle r) {
+        canvas.drawRect(0, 0, r.getWidth(), r.getHeight(), paint);
+        return null;
+    }
+
+    @Override
+    public Void onGroup(final Group g) {
+        for (final Object s : g.getShapes()) {
+            ((Shape) s).accept(this);
+        }
         return null;
     }
 
@@ -38,17 +52,9 @@ public class Draw implements Visitor {
     @Override
     public Void onFill(final Fill f) {
         final Style oldStyle = paint.getStyle();
-        paint.setStyle(Style.FILL_AND_STROKE);
+        paint.setStyle(Style.FILL);
         f.getShape().accept(this);
         paint.setStyle(oldStyle);
-        return null;
-    }
-
-    @Override
-    public Void onGroup(final Group g) {
-        for (final Object s : g.getShapes()) {
-            ((Shape) s).accept(this);
-        }
         return null;
     }
 
@@ -57,12 +63,6 @@ public class Draw implements Visitor {
         canvas.translate(l.getX(), l.getY());
         l.getShape().accept(this);
         canvas.translate(-l.getX(), -l.getY());
-        return null;
-    }
-
-    @Override
-    public Void onRectangle(final Rectangle r) {
-        canvas.drawRect(0, 0, r.getWidth(), r.getHeight(), paint);
         return null;
     }
 
@@ -76,13 +76,13 @@ public class Draw implements Visitor {
     }
 
     @Override
-    public Void onPolygon(final Polygon s) {
-        final int n = s.getPoints().size();
+    public Void onPolygon(final Polygon p) {
+        final int n = p.getPoints().size();
         final float[] pts = new float[n * 4];
 
         for (int i = 0; i < n; i++) {
-            final Point p1 = s.getPoints().get(i);
-            final Point p2 = s.getPoints().get((i + 1) % n);
+            final Point p1 = p.getPoints().get(i);
+            final Point p2 = p.getPoints().get((i + 1) % n);
 
             pts[i * 4] = p1.getX();
             pts[i * 4 + 1] = p1.getY();
